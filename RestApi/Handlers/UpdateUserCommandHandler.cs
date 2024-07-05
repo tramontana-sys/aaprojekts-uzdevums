@@ -23,6 +23,11 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
             throw new Exception($"Not found user with id {request.Id}");
         }
 
+        //TODO test this
+        user.Name = request.Name;
+        user.Email = request.Email;
+        user.Verified = request.Verified;
+        
         this.database.Entry(user).State = EntityState.Modified;
         await this.database.SaveChangesAsync(cancellationToken);
 

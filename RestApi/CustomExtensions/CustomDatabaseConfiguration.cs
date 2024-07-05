@@ -1,4 +1,5 @@
-﻿using RestApi.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using RestApi.Database;
 
 namespace RestApi.CustomExtensions;
 
@@ -18,15 +19,13 @@ public class CustomDatabaseConfiguration
         switch (databaseProvider?.ToLower())
         {
             case "sqlite":
-                services.AddSingleton<IDatabase, SqliteDatabase>();
+                services.AddDbContext<DatabaseContext>(options =>
+                    options.UseSqlite(this.config.GetConnectionString("DefaultConnection")));
                 break;
             default:
             {
                 throw new Exception("Database type not recognized!");
             }
         }
-        
-        var database = services.BuildServiceProvider().GetService<IDatabase>();
-        database?.ConfigureDatabase(services, this.config);
     }
 }

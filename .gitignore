@@ -2,3 +2,5 @@
 /RestApi/.vs
 /RestApi/bin
 /RestApi/obj/
+/RestApi/RestApi.Tests/bin
+/RestApi/RestApi.Tests/obj

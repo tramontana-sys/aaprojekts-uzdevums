@@ -3,10 +3,13 @@ using RestApi.Commands;
 
 namespace RestApi.Validators;
 
-public class CreateUserCommandValidator: AbstractValidator<CreateUserCommand>
+public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {
-    public CreateUserCommandValidator()
+    public UpdateUserCommandValidator()
     {
+        RuleFor(x => x.Id)
+            .GreaterThan(0).WithMessage("User ID must be greater than zero.");
+
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("User name is required.")
             .MaximumLength(100).WithMessage("User name must not exceed 100 characters.");

@@ -1,19 +1,21 @@
 ﻿using Microsoft.OpenApi.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using RestApi.CustomExtensions;
 using RestApi.Database;
+using System.Reflection;
 
 namespace RestApi;
 
 public class Startup
 {
+    private IConfiguration Configuration { get; }
+
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
     }
-
-    private IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
@@ -34,7 +36,12 @@ public class Startup
         // Add Swagger
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "AA Project Test API", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "User Manager API", Version = "v1" });
+
+            // Enable xml docs // It was cool with Jetbrains Rider
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
         });
     }
 
@@ -44,7 +51,13 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "AA Project TEST TASK"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "User Manager API"); });
+        }
+
+        using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
+        {
+            var context = serviceScope?.ServiceProvider.GetRequiredService<DatabaseContext>();
+            context?.Database.Migrate();
         }
 
         app.UseHttpsRedirection();

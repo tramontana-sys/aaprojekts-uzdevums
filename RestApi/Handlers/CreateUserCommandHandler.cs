@@ -25,12 +25,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, User>
 
     private static User CreateUser(CreateUserCommand request)
     {
-        //TODO Get next item id from database
-        var id = 0;
-
         return new User
         {
-            Id = id,
             Name = request.Name,
             Email = request.Email,
             Verified = request.Verified

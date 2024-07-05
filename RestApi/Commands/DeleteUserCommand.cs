@@ -2,7 +2,7 @@
 
 namespace RestApi.Commands;
 
-public class DeleteUserCommand : IRequest<Unit>
+public class DeleteUserCommand(int id) : IRequest<Unit>
 {
     public int Id { get; set; }
 }
