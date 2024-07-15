@@ -20,7 +20,7 @@ export const updateUser = createAsyncThunk('users/updateUser', async (user: User
 });
 
 export const deleteUser = createAsyncThunk('users/deleteUser', async (id: number) => {
-  await axios.delete(`${API_URL}/${id}`);
+  var result = await axios.delete(`${API_URL}/${id}`);
   return id;
 });
 

@@ -25,10 +25,11 @@ const UserTable: React.FC<UserTableProps> = ({ filteredUsers }) => {
 
   const handleUpdateUser = (user: User) => {
     dispatch(updateUser(user)).then(() => {
-      setEditingId(null);
-      setNameEdit(null);
-      setEmailEdit(null); 
+      dispatch(fetchUsers());
     });
+    setEditingId(null);
+    setNameEdit(null);
+    setEmailEdit(null);
   };
 
   const handleDeleteUser = (id: number) => {
@@ -88,7 +89,7 @@ const UserTable: React.FC<UserTableProps> = ({ filteredUsers }) => {
                     type="text"
                     value={nameEdit?.userId === user.id ? nameEdit.value : user.name}
                     onChange={e => handleNameChange(user.id, e.target.value)}
-                    // onBlur={() => handleBlur(user)}
+                    onBlur={() => handleBlur(user)}
                     onKeyDown={(e) => handleKeyDown(e, user)}
                   />
                 ) : (
@@ -101,7 +102,7 @@ const UserTable: React.FC<UserTableProps> = ({ filteredUsers }) => {
                     type="text"
                     value={emailEdit?.userId === user.id ? emailEdit.value : user.email}
                     onChange={e => handleEmailChange(user.id, e.target.value)}
-                    // onBlur={() => handleBlur(user)}
+                    onBlur={() => handleBlur(user)}
                     onKeyDown={(e) => handleKeyDown(e, user)}
                   />
                 ) : (
