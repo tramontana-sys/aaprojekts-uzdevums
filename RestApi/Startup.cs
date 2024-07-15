@@ -30,6 +30,18 @@ public class Startup
         services.AddFluentValidationAutoValidation();
         services.AddFluentValidationClientsideAdapters();
 
+        // Add Cors
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllOrigins",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+        });
+        
         // Add Controllers
         services.AddControllers();
 
@@ -64,6 +76,8 @@ public class Startup
 
         app.UseRouting();
 
+        app.UseCors("AllowAllOrigins");
+        
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
